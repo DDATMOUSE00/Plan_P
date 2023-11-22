@@ -185,8 +185,6 @@
             Console.WriteLine("당신의 캐릭터는 사망하였습니다.");
             Console.ResetColor();
             Console.WriteLine("");
-            Console.WriteLine(" 1. 재시작 ");
-            Console.WriteLine("");
             Console.WriteLine(" 0. 게임종료");
             Console.WriteLine("");
             Console.WriteLine(" 원하시는 행동을 입력해주세요");
@@ -194,9 +192,6 @@
             int input = CheckValidInput(0, 1);
             switch (input)
             {
-                case 1:
-                    DisplayGameIntro();
-                    break;
                 case 0:
                     Console.WriteLine("");
                     Console.WriteLine("");
