@@ -31,7 +31,7 @@ namespace Plan_P
         }
         public void PrintItemStatDescription(bool withNumber = false, int idx = 0)
         {
-            Console.Write(" - ");
+            Console.Write(" 　　　- ");
             if (withNumber)
             {
                 Console.ForegroundColor = ConsoleColor.Cyan;
@@ -46,13 +46,15 @@ namespace Plan_P
                 Console.ResetColor();
                 Console.Write("]");
             }
-            Console.Write(Name);
-            //(Atk >= 0 ? "+" : "") [조건 ? 조건이 참이면 : 조건이 거짓이면] 삼항연산자
-            if (Dmg != 0) Console.Write($" | 공격력 {(Dmg >= 0 ? "+" : "")}{Dmg}");
-            if (Def != 0) Console.Write($" | 방어력 {(Def >= 0 ? "+" : "")}{Def}");
-            if (MaxHp != 0) Console.Write($" | 체력 {(MaxHp >= 0 ? "+" : "")}{MaxHp}");
+            Console.Write(MainScene.PadRightForMixedtext(Name, 18));
+            Console.Write("     ");
 
-            Console.Write(" | ");
+            //(Atk >= 0 ? "+" : "") [조건 ? 조건이 참이면 : 조건이 거짓이면] 삼항연산자
+            if (Dmg != 0) Console.Write($" 공격력 {(Dmg >= 0 ? "+" : "")}{Dmg}   ");
+            if (Def != 0) Console.Write($" 방어력 {(Def >= 0 ? "+" : "")}{Def}   ");
+            if (MaxHp != 0) Console.Write($" 체력 {(MaxHp >= 0 ? "+" : "")}{MaxHp}    ");
+
+            Console.Write("     ");
 
             Console.WriteLine(Description);
         }
@@ -114,6 +116,7 @@ namespace Plan_P
 
         public void PrintItemDescription(bool withNumber = false, int idx = 0)
         {
+
             Console.Write(" - ");
             if (withNumber)
             {
@@ -141,11 +144,17 @@ namespace Plan_P
         public static void InventoryScene()
         {
             Console.Clear();
+            Console.SetCursorPosition(37, 2);
+            Console.Write("╔⊶⊶⊶⊷⊷⊷⊷⊷⊷⊷⊷⊷⊷⊷⊷⊷⊷⊶⊷⊶✞⊷⊷⊷⊷⊷⊷⊷⊷⊷⊷⊷⊷⊷⊷⊷⊷⊷⊷⊷╗");
+            Console.SetCursorPosition(47, 4);
+            Console.Write("      ■ 인벤토리 ■     ");
+            Console.SetCursorPosition(37, 6);
+            Console.Write("╚⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶✞⊷⊷⊷⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶╝");
+            Console.SetCursorPosition(40, 8);
+            Console.Write("[            아이템 목록            ]");
+            Console.SetCursorPosition(40, 9);
+            Console.WriteLine();
 
-            Console.WriteLine("■ 인벤토리 ■");
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine("[아이템 목록]");
 
             for (EquipItemCnt = 0; EquipItemCnt < EquipmentItem.ItemCnt; EquipItemCnt++)
             {
@@ -157,10 +166,25 @@ namespace Plan_P
             }
 
             Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine("0. 나가기");
-            Console.WriteLine("1. 장착관리");
-            Console.WriteLine("2. 소모품 사용");
+            Console.SetCursorPosition(40, 16);
+            Console.Write("[            1. 장착관리            ]");
+
+            Console.SetCursorPosition(40, 18);
+            Console.Write("[            2. 소모품사용          ]");
+            Console.SetCursorPosition(40, 20);
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write("[            0. 나가기              ]");
+            Console.ResetColor();
+
+            Console.SetCursorPosition(1, 23);
+            for (int i = 2; i < 120; i++) // 중간테두리
+            {
+
+                Console.Write('─');
+            }
+            Console.SetCursorPosition(45, 25);
+            Console.Write("원하시는 행동을 입력해주세요.");
+            Console.SetCursorPosition(57, 27);
 
             int input = MainScene.CheckValidInput(0, 2);
             switch (input)
@@ -175,6 +199,7 @@ namespace Plan_P
                     ConsumableManage.ConsumableManagent();
                     break;
             }
+            Console.ReadLine();
         }
         public static void ToggleEquipStatus(int idx)
         {
@@ -184,20 +209,23 @@ namespace Plan_P
         {
             haveEquipmentItems = new EquipmentItem[20];
             haveConsumptionItems = new ConsumptionItem[20];
-            if (MainScene._player.Job == "Warrior")
+            if (MainScene._player.Job == "퇴마사")
             {
                 AddEquipmentItem(0);
                 AddEquipmentItem(1);
+                AddEquipmentItem(6);
             }
-            else if (MainScene._player.Job == "Archer")
+            else if (MainScene._player.Job == "경찰")
             {
                 AddEquipmentItem(2);
                 AddEquipmentItem(3);
+                AddEquipmentItem(6);
             }
-            else if (MainScene._player.Job == "Mage")
+            else if (MainScene._player.Job == "학생")
             {
                 AddEquipmentItem(4);
                 AddEquipmentItem(5);
+                AddEquipmentItem(6);
             }
 
         }
@@ -228,17 +256,35 @@ namespace Plan_P
         public static void EquipmentManagent()
         {
             Console.Clear();
-            Console.WriteLine("◆ 인벤토리 - 장비 관리 ◆");
+            Console.SetCursorPosition(37, 2);
+            Console.Write("╔⊶⊶⊶⊷⊷⊷⊷⊷⊷⊷⊷⊷⊷⊷⊷⊷⊷⊶⊷⊶✞⊷⊷⊷⊷⊷⊷⊷⊷⊷⊷⊷⊷⊷⊷⊷⊷⊷⊷⊷╗");
+            Console.SetCursorPosition(48, 4);
+            Console.Write("    ◆ 장비 관리 ◆     ");
+            Console.SetCursorPosition(37, 6);
+            Console.Write("╚⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶✞⊷⊷⊷⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶╝");
+            Console.SetCursorPosition(35, 25);
             Console.WriteLine("장착하거나 해제할 아이템의 숫자를 입력하세요");
-            Console.WriteLine();
-            Console.WriteLine("[아이템 목록]");
+            Console.SetCursorPosition(40, 8);
+            Console.Write("[            아이템 목록            ]");
+            Console.SetCursorPosition(40, 9);
+            Console.WriteLine("");
             for (Inventory.EquipItemCnt = 0; Inventory.EquipItemCnt < EquipmentItem.ItemCnt; Inventory.EquipItemCnt++)
             {
                 Inventory.haveEquipmentItems[Inventory.EquipItemCnt].PrintItemStatDescription(true, Inventory.EquipItemCnt + 1);
             }
             Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine("0. 나가기");
+            Console.SetCursorPosition(40, 20);
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write("[            0. 나가기              ]");
+            Console.ResetColor();
+
+            Console.SetCursorPosition(1, 23);
+            for (int i = 2; i < 120; i++) // 중간테두리
+            {
+
+                Console.Write('─');
+            }
+            Console.SetCursorPosition(57, 27);
 
             int input = MainScene.CheckValidInput(0, EquipmentItem.ItemCnt);
             switch (input)
@@ -251,6 +297,7 @@ namespace Plan_P
                     EquipmentManagent();
                     break;
             }
+            Console.ReadLine();
         }
     }
     public class ConsumableManage
@@ -258,18 +305,36 @@ namespace Plan_P
         public static void ConsumableManagent()
         {
             Console.Clear();
-            Console.WriteLine("◆ 인벤토리 - 소모품 관리 ◆");
+            Console.SetCursorPosition(37, 2);
+            Console.Write("╔⊶⊶⊶⊷⊷⊷⊷⊷⊷⊷⊷⊷⊷⊷⊷⊷⊷⊶⊷⊶✞⊷⊷⊷⊷⊷⊷⊷⊷⊷⊷⊷⊷⊷⊷⊷⊷⊷⊷⊷╗");
+            Console.SetCursorPosition(48, 4);
+            Console.Write("    ◆ 소모품 관리 ◆     ");
+            Console.SetCursorPosition(37, 6);
+            Console.Write("╚⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶✞⊷⊷⊷⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶⊶╝");
+            Console.SetCursorPosition(43, 25);
             Console.WriteLine("사용할 아이템의 숫자를 입력하세요");
-            Console.WriteLine();
-            Console.WriteLine("[아이템 목록]");
+            Console.SetCursorPosition(40, 8);
+            Console.Write("[            아이템 목록            ]");
+            Console.SetCursorPosition(40, 9);
+            Console.WriteLine("");
+
             for (Inventory.ConsumItemCnt = 0; Inventory.ConsumItemCnt < ConsumptionItem.ItemCnt; Inventory.ConsumItemCnt++)
             {
                 Inventory.haveConsumptionItems[Inventory.ConsumItemCnt].PrintItemDescription(true, Inventory.ConsumItemCnt + 1);
             }
             Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine("0. 나가기");
+            Console.SetCursorPosition(40, 20);
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write("[            0. 나가기              ]");
+            Console.ResetColor();
 
+            Console.SetCursorPosition(1, 23);
+            for (int i = 2; i < 120; i++) // 중간테두리
+            {
+
+                Console.Write('─');
+            }
+            Console.SetCursorPosition(57, 27);
             int input = MainScene.CheckValidInput(0, EquipmentItem.ItemCnt);
             switch (input)
             {
@@ -281,6 +346,7 @@ namespace Plan_P
                     ConsumableManagent();
                     break;
             }
+            Console.ReadLine();
         }
     }
 
@@ -293,13 +359,14 @@ namespace Plan_P
         {
             EquipmentItemList = new EquipmentItem[24];
             //Id, 이름, 설명, 장비타입(무기: 0, 방어구: 1), 공격력, 방어력, 최대체력
-            EquipmentItemList[0] = new EquipmentItem(0, "녹슨 검", "전사가 사용하는 검", 0, 5, 0, 0);
-            EquipmentItemList[1] = new EquipmentItem(1, "허름한 가죽갑옷", "전사가 사용하는 가죽갑옷", 1, 0, 8, 0);
-            EquipmentItemList[2] = new EquipmentItem(2, "허름한 활", "궁수가 사용하는 활", 0, 7, 0, 0);
-            EquipmentItemList[3] = new EquipmentItem(3, "허름한 사냥군의 옷", "궁수가 사용하는 허름한 옷", 1, 0, 3, 0);
-            EquipmentItemList[4] = new EquipmentItem(4, "낡은 지팡이", "마법사가 사용하는 지팡이", 0, 6, 0, 0);
-            EquipmentItemList[5] = new EquipmentItem(5, "허름한 망토", "마법사가 사용하는 망토", 1, 0, 4, 0);
-            EquipmentItemList[6] = new EquipmentItem(6, "이름", "설명", 0, 0, 0, 0);
+            EquipmentItemList[0] = new EquipmentItem(0, "십자가", "   퇴마사의 무기 ", 0, 5, 0, 0);
+            EquipmentItemList[1] = new EquipmentItem(1, "빛나는 성경책", "   퇴마사가 사용하는 법서", 1, 0, 8, 0);
+            EquipmentItemList[2] = new EquipmentItem(2, "낡은 권총", "   경력 5년된 경찰의 무기", 0, 7, 0, 0);
+            EquipmentItemList[3] = new EquipmentItem(3, "구김이 많은 경찰복", "   경찰의 바쁜업무가 보인다 ", 1, 0, 3, 0);
+            EquipmentItemList[4] = new EquipmentItem(4, "대나무 단소 ", "   수행평가때 사용할 단소 ", 0, 6, 0, 0);
+            EquipmentItemList[5] = new EquipmentItem(5, "나이키 가방", "   유행하는 메신저백이다  ", 1, 0, 4, 0);
+            EquipmentItemList[6] = new EquipmentItem(6, "현영 펀치", "우리 애 괴롭히면 각오해 ", 1, 1000, 0, 0);
+            EquipmentItemList[7] = new EquipmentItem(6, "이름", "설명", 0, 0, 0, 0);
 
             ConsumptionItemList = new ConsumptionItem[24];
             //id, 이름, 설명, 회복량, 개수
@@ -321,4 +388,6 @@ namespace Plan_P
             character.Hp += consumptionItem.RecoveredHp;
         }
     }
+
+
 }
